@@ -2,23 +2,45 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo do Número Secreto</title>
     <style>
         body {
-            background-color: #0a0a2a;
-            color: #fff;
-            font-family: Arial, sans-serif;
+            background-color: #001f3f;
+            color: white;
+            font-family: 'Arial', sans-serif;
             text-align: center;
             padding-top: 50px;
             overflow-x: hidden;
         }
+
         h1 {
             font-size: 3em;
+            margin-bottom: 10px;
         }
-        input, button {
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+
+        input[type="number"] {
             font-size: 1.2em;
             padding: 10px;
-            margin: 5px;
+            width: 80px;
+            text-align: center;
+        }
+
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        #mensagem {
+            margin-top: 20px;
+            font-size: 1.5em;
         }
 
         /* --- confete --- */
@@ -26,8 +48,82 @@
             position: absolute;
             width: 10px;
             height: 10px;
+            top: 0;
             border-radius: 50%;
+            animation: cair 3s linear forwards;
+        }
+
+        @keyframes cair {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(720deg); }
         }
     </style>
 </head>
 <body>
+    <h1>Jogo do Número Secreto</h1>
+    <h2>Tente adivinhar o número entre 1 e 10!</h2>
+
+    <input type="number" id="chute" placeholder="Número" min="1" max="10">
+    <button id="botaoChutar">Chutar</button>
+
+    <p id="mensagem"></p>
+
+    <script>
+        let numeroSecreto = gerarNumeroSecreto();
+
+        function gerarNumeroSecreto() {
+            return Math.floor(Math.random() * 10) + 1;
+        }
+
+        function verificarChute() {
+            const chute = Number(document.getElementById('chute').value);
+            const mensagem = document.getElementById('mensagem');
+
+            if (!chute || chute < 1 || chute > 10) {
+                mensagem.textContent = "Digite um número válido entre 1 e 10!";
+                return;
+            }
+
+            if (chute === numeroSecreto) {
+                mensagem.textContent = `🎉 Parabéns! Você descobriu o número secreto: ${numeroSecreto}`;
+                document.body.style.backgroundColor = "#28a745";
+
+                // Confete explosivo
+                for (let i = 0; i < 100; i++) {
+                    const confete = document.createElement("div");
+                    confete.className = "confete";
+                    confete.style.left = Math.random() * window.innerWidth + "px";
+                    confete.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
+                    confete.style.animationDuration = (2 + Math.random() * 2) + "s";
+                    confete.style.transform = `rotate(${Math.random()*360}deg)`;
+                    document.body.appendChild(confete);
+                    setTimeout(() => confete.remove(), 3000);
+                }
+
+                // Novo número secreto
+                numeroSecreto = gerarNumeroSecreto();
+
+            } else if (chute > numeroSecreto) {
+                mensagem.textContent = "O número secreto é menor!";
+                document.body.style.backgroundColor = "#001f3f";
+            } else {
+                mensagem.textContent = "O número secreto é maior!";
+                document.body.style.backgroundColor = "#001f3f";
+            }
+
+            document.getElementById('chute').value = '';
+            document.getElementById('chute').focus();
+        }
+
+        // Botão chutar
+        document.getElementById('botaoChutar').addEventListener('click', verificarChute);
+
+        // Pressionar Enter também funciona
+        document.getElementById('chute').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                verificarChute();
+            }
+        });
+    </script>
+</body>
+</html>
