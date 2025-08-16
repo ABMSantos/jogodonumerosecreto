@@ -18,3 +18,4 @@ function verificarChute() {
         mensagem.textContent = "O número secreto é maior!";
     }
 }
+
