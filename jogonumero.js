@@ -1,27 +1,20 @@
-alert('Boas-vindas ao jogo do número secreto!');
-
 const numeroSecreto = 4;
 
-function jogar() {
-    let acertou = false;
+function verificarChute() {
+    const chute = Number(document.getElementById('chute').value);
+    const mensagem = document.getElementById('mensagem');
 
-    while (!acertou) {
-        const chute = Number(prompt('Escolha um número entre 1 e 10'));
+    if (!chute) {
+        mensagem.textContent = "Digite um número!";
+        return;
+    }
 
-        if (isNaN(chute)) {
-            alert('Por favor, digite um número válido!');
-            continue;
-        }
-
-        if (chute === numeroSecreto) {
-            alert(`Parabéns! Você descobriu o número secreto: ${numeroSecreto}`);
-            acertou = true;
-        } else if (chute > numeroSecreto) {
-            alert(`O número secreto é menor que ${chute}`);
-        } else {
-            alert(`O número secreto é maior que ${chute}`);
-        }
+    if (chute === numeroSecreto) {
+        mensagem.textContent = `🎉 Parabéns! Você descobriu o número secreto: ${numeroSecreto}`;
+        document.body.style.backgroundColor = "#28a745"; // muda fundo pra verde
+    } else if (chute > numeroSecreto) {
+        mensagem.textContent = "O número secreto é menor!";
+    } else {
+        mensagem.textContent = "O número secreto é maior!";
     }
 }
-
-jogar();
