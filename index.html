@@ -5,58 +5,37 @@
     <title>Jogo do Número Secreto</title>
     <style>
         body {
-            background-color: #001f3f; /* fundo azul escuro */
-            color: white;
+            background-color: #0a0a2a;
+            color: #fff;
             font-family: Arial, sans-serif;
             text-align: center;
             padding-top: 50px;
         }
-
-        input, button {
-            font-size: 20px;
-            padding: 10px;
-            margin: 10px;
+        h1 {
+            font-size: 3em;
         }
-
-        #mensagem {
-            margin-top: 20px;
-            font-size: 24px;
-            font-weight: bold;
+        input, button {
+            font-size: 1.2em;
+            padding: 10px;
+            margin: 5px;
         }
 
         /* --- confete --- */
-.confete {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    top: 50px; /* ponto de “explosão” inicial */
-    border-radius: 50%;
-    animation: explodir 3s forwards;
-}
-
-@keyframes explodir {
-    0% {
-        transform: translate(0, 0) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(var(--x), var(--y)) rotate(360deg);
-        opacity: 0;
-    }
-}
-        
+        .confete {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
     </style>
 </head>
 <body>
-    <h1>Jogo do Número Secreto</h1>
-    <h2>Tente adivinhar o número</h2>
-    <input type="number" id="chute" min="1" max="10">
-    <button onclick="verificarChute()">Chutar</button>
-
+    <h1>JOGO DO NÚMERO SECRETO</h1>
+    <p>Tente adivinhar um número entre 1 e 10</p>
+    <input id="chute" type="number" min="1" max="10" placeholder="Digite seu número">
+    <button id="btnChutar">Chutar</button>
     <p id="mensagem"></p>
 
     <script src="jogonumero.js"></script>
 </body>
 </html>
-
-
