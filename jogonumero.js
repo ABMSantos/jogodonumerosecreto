@@ -13,19 +13,19 @@ function verificarChute() {
         return;
     }
 
-    if (chute === numeroSecreto) {
-        mensagem.textContent = `🎉 Parabéns! Você descobriu o número secreto: ${numeroSecreto}`;
-        document.body.style.backgroundColor = "#28a745";
+if (chute === numeroSecreto) {
+    mensagem.textContent = `🎉 Parabéns! Você descobriu o número secreto: ${numeroSecreto}`;
+    document.body.style.backgroundColor = "#28a745";
 
-        // efeito confete
-        for (let i = 0; i < 100; i++) {
-            const confete = document.createElement("div");
-            confete.className = "confete";
-            confete.style.left = Math.random() * window.innerWidth + "px";
-            confete.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-            document.body.appendChild(confete);
+    // cria confete
+    for (let i = 0; i < 100; i++) {
+        const confete = document.createElement("div");
+        confete.className = "confete";
+        confete.style.left = Math.random() * window.innerWidth + "px";
+        confete.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
+        document.body.appendChild(confete);
 
-            setTimeout(() => confete.remove(), 3000);
+        setTimeout(() => confete.remove(), 3000); // remove depois de 3s
         }
 
         // gera um novo número secreto para a próxima rodada
@@ -36,5 +36,6 @@ function verificarChute() {
         mensagem.textContent = "O número secreto é maior!";
     }
 }
+
 
 
