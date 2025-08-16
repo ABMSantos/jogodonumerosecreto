@@ -45,18 +45,16 @@
 
         /* --- confete --- */
         .confete {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            top: 0;
-            border-radius: 50%;
-            animation: cair 3s linear forwards;
-        }
+    position: absolute;
+    border-radius: 50%;
+}
 
-        @keyframes cair {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(720deg); }
-        }
+@keyframes cair {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    50% { transform: translateY(50vh) rotate(180deg); }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
     </style>
 </head>
 <body>
@@ -127,3 +125,4 @@
     </script>
 </body>
 </html>
+
