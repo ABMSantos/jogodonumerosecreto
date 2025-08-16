@@ -5,16 +5,39 @@
     <title>Jogo do Número Secreto</title>
     <style>
         body {
-            background-color: #001f3f;
+            background-color: #001f3f; /* fundo azul escuro */
             color: white;
             font-family: Arial, sans-serif;
             text-align: center;
             padding-top: 50px;
         }
-        h1 { font-size: 50px; margin-bottom: 10px; }
-        h2 { font-size: 30px; margin-bottom: 30px; }
-        input { font-size: 20px; padding: 5px; width: 60px; text-align: center; }
-        button { font-size: 20px; padding: 5px 10px; }
+
+        input, button {
+            font-size: 20px;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        #mensagem {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* --- confete --- */
+        .confete {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: 0;
+            animation: cair 3s linear;
+        }
+
+        @keyframes cair {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
@@ -28,3 +51,4 @@
     <script src="jogonumero.js"></script>
 </body>
 </html>
+
