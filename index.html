@@ -25,19 +25,26 @@
         }
 
         /* --- confete --- */
-        .confete {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            top: 0;
-            animation: cair 3s linear;
-        }
+.confete {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: 50px; /* ponto de “explosão” inicial */
+    border-radius: 50%;
+    animation: explodir 3s forwards;
+}
 
-        @keyframes cair {
-            to {
-                transform: translateY(100vh) rotate(360deg);
-            }
-        }
+@keyframes explodir {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--x), var(--y)) rotate(360deg);
+        opacity: 0;
+    }
+}
+        
     </style>
 </head>
 <body>
@@ -51,4 +58,5 @@
     <script src="jogonumero.js"></script>
 </body>
 </html>
+
 
