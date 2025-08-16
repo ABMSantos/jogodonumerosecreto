@@ -4,35 +4,6 @@ function gerarNumeroSecreto() {
     return Math.floor(Math.random() * 10) + 1;
 }
 
-// função que cria confete
-function criarConfete() {
-    const confete = document.createElement("div");
-    confete.className = "confete";
-    confete.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-    confete.style.left = Math.random() * window.innerWidth + "px";
-    confete.style.top = "0px";
-
-    document.body.appendChild(confete);
-
-    const velocidadeX = (Math.random() - 0.5) * 10;
-    const velocidadeY = Math.random() * 10 + 2;
-
-    let posX = parseFloat(confete.style.left);
-    let posY = 0;
-
-    function animar() {
-        posX += velocidadeX;
-        posY += velocidadeY;
-        confete.style.transform = `translate(${posX}px, ${posY}px) rotate(${posX*5}deg)`;
-        if (posY < window.innerHeight) {
-            requestAnimationFrame(animar);
-        } else {
-            confete.remove();
-        }
-    }
-    animar();
-}
-
 function verificarChute() {
     const chute = Number(document.getElementById('chute').value);
     const mensagem = document.getElementById('mensagem');
@@ -46,17 +17,38 @@ function verificarChute() {
         mensagem.textContent = `🎉 Parabéns! Você descobriu o número secreto: ${numeroSecreto}`;
         document.body.style.backgroundColor = "#28a745";
 
-        // explodir confete
-        for (let i = 0; i < 100; i++) criarConfete();
+        // Efeito confete explosivo
+        for (let i = 0; i < 100; i++) {
+            const confete = document.createElement("div");
+            confete.className = "confete";
+            const size = Math.random() * 10 + 5;
+            confete.style.width = `${size}px`;
+            confete.style.height = `${size}px`;
+            confete.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
+            confete.style.left = `${Math.random() * window.innerWidth}px`;
+            confete.style.top = `${Math.random() * 50}px`; // Explode do topo
+            confete.style.transform = `rotate(${Math.random()*360}deg)`;
+            confete.style.animation = `cair ${2 + Math.random()*2}s ease-out forwards`;
+            document.body.appendChild(confete);
+            setTimeout(() => confete.remove(), 3000);
+        }
 
+        // Novo número secreto para próxima rodada
         numeroSecreto = gerarNumeroSecreto();
-        document.getElementById('chute').value = "";
+
     } else if (chute > numeroSecreto) {
         mensagem.textContent = "O número secreto é menor!";
     } else {
         mensagem.textContent = "O número secreto é maior!";
     }
 }
+
+// Eventos: clique e Enter
+document.getElementById('botaoChutar').addEventListener('click', verificarChute);
+document.getElementById('chute').addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') verificarChute();
+});
+
 
 // botão
 document.getElementById('btnChutar').addEventListener('click', verificarChute);
@@ -65,3 +57,4 @@ document.getElementById('btnChutar').addEventListener('click', verificarChute);
 document.getElementById('chute').addEventListener('keyup', function(event) {
     if (event.key === "Enter") verificarChute();
 });
+
