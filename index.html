@@ -1,120 +1,30 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Jogo do Número Secreto</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #001f3f; /* azul escuro */
-      font-family: 'Arial', sans-serif;
-      color: white;
-      text-align: center;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    h1 {
-      font-size: 4em;
-      margin: 0.2em;
-    }
-
-    p {
-      font-size: 1.5em;
-      margin: 0.5em;
-    }
-
-    input[type="number"] {
-      padding: 0.5em;
-      font-size: 1.2em;
-      width: 80px;
-      text-align: center;
-      margin-right: 10px;
-    }
-
-    button {
-      padding: 0.5em 1em;
-      font-size: 1.2em;
-      cursor: pointer;
-      background-color: #ff851b;
-      border: none;
-      border-radius: 5px;
-      color: white;
-    }
-
-    .success {
-      font-size: 5em;
-      color: #2ecc40; /* verde */
-    }
-
-    .confete {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background-color: red;
-      opacity: 0.8;
-      animation: cair 2s linear forwards;
-    }
-
-    @keyframes cair {
-      0% {transform: translateY(0) rotate(0deg);}
-      100% {transform: translateY(100vh) rotate(360deg);}
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Jogo do Número Secreto</title>
+    <style>
+        body {
+            background-color: #001f3f;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 50px;
+        }
+        h1 { font-size: 50px; margin-bottom: 10px; }
+        h2 { font-size: 30px; margin-bottom: 30px; }
+        input { font-size: 20px; padding: 5px; width: 60px; text-align: center; }
+        button { font-size: 20px; padding: 5px 10px; }
+    </style>
 </head>
 <body>
-  <h1>JOGO DO NÚMERO SECRETO</h1>
-  <p>Tente adivinhar!</p>
-  <div id="game">
-    <input type="number" id="chute" placeholder="1-10" min="1" max="10">
+    <h1>Jogo do Número Secreto</h1>
+    <h2>Tente adivinhar o número</h2>
+    <input type="number" id="chute" min="1" max="10">
     <button onclick="verificarChute()">Chutar</button>
-    <p id="dica"></p>
-  </div>
 
-  <script>
-    const numeroSecreto = Math.floor(Math.random() * 10) + 1;
+    <p id="mensagem"></p>
 
-    function criarConfete() {
-      for (let i = 0; i < 100; i++) {
-        const confete = document.createElement('div');
-        confete.classList.add('confete');
-        confete.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
-        confete.style.left = `${Math.random() * window.innerWidth}px`;
-        confete.style.animationDuration = `${2 + Math.random()*2}s`;
-        document.body.appendChild(confete);
-
-        // Remove confete após animação
-        setTimeout(() => confete.remove(), 4000);
-      }
-    }
-
-    function verificarChute() {
-      const chuteInput = document.getElementById('chute');
-      const dica = document.getElementById('dica');
-      const chute = Number(chuteInput.value);
-
-      if (!chute || chute < 1 || chute > 10) {
-        dica.textContent = 'Digite um número entre 1 e 10!';
-        return;
-      }
-
-      if (chute === numeroSecreto) {
-        document.body.innerHTML = `<h1 class="success">VOCÊ ACERTOU!</h1>`;
-        criarConfete();
-      } else if (chute > numeroSecreto) {
-        dica.textContent = `O número secreto é menor que ${chute}`;
-      } else {
-        dica.textContent = `O número secreto é maior que ${chute}`;
-      }
-
-      chuteInput.value = '';
-      chuteInput.focus();
-    }
-  </script>
+    <script src="jogonumero.js"></script>
 </body>
 </html>
