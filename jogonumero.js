@@ -4,26 +4,27 @@ function gerarNumeroSecreto() {
     return Math.floor(Math.random() * 10) + 1;
 }
 
+// função que cria confete
 function criarConfete() {
     const confete = document.createElement("div");
     confete.className = "confete";
     confete.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-    confete.style.width = "10px";
-    confete.style.height = "10px";
-    confete.style.top = "50px";
-    confete.style.left = "50%";
+    confete.style.left = Math.random() * window.innerWidth + "px";
+    confete.style.top = "0px";
 
     document.body.appendChild(confete);
 
-    const angle = Math.random() * 2 * Math.PI;
-    const speed = Math.random() * 5 + 2;
-    let x = 0, y = 0;
+    const velocidadeX = (Math.random() - 0.5) * 10;
+    const velocidadeY = Math.random() * 10 + 2;
+
+    let posX = parseFloat(confete.style.left);
+    let posY = 0;
 
     function animar() {
-        x += Math.cos(angle) * speed;
-        y += Math.sin(angle) * speed + 1; // gravidade
-        confete.style.transform = `translate(${x}px, ${y}px) rotate(${x*5}deg)`;
-        if (y < window.innerHeight) {
+        posX += velocidadeX;
+        posY += velocidadeY;
+        confete.style.transform = `translate(${posX}px, ${posY}px) rotate(${posX*5}deg)`;
+        if (posY < window.innerHeight) {
             requestAnimationFrame(animar);
         } else {
             confete.remove();
@@ -45,9 +46,9 @@ function verificarChute() {
         mensagem.textContent = `🎉 Parabéns! Você descobriu o número secreto: ${numeroSecreto}`;
         document.body.style.backgroundColor = "#28a745";
 
+        // explodir confete
         for (let i = 0; i < 100; i++) criarConfete();
 
-        // gera novo número secreto
         numeroSecreto = gerarNumeroSecreto();
         document.getElementById('chute').value = "";
     } else if (chute > numeroSecreto) {
@@ -57,17 +58,10 @@ function verificarChute() {
     }
 }
 
-// evento do botão
+// botão
 document.getElementById('btnChutar').addEventListener('click', verificarChute);
 
-// evento Enter
+// permitir Enter
 document.getElementById('chute').addEventListener('keyup', function(event) {
-    if (event.key === "Enter") {
-        verificarChute();
-    }
+    if (event.key === "Enter") verificarChute();
 });
-
-
-
-
-
