@@ -2,117 +2,66 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jogo do Número Secreto</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #6a11cb, #2575fc);
-      color: white;
-      text-align: center;
-      height: 100vh;
+      color: #fff;
+      font-family: Arial, sans-serif;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      height: 100vh;
       margin: 0;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
+      font-size: 2rem;
+      margin-bottom: 20px;
     }
 
     input {
       padding: 10px;
-      border-radius: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
       border: none;
       outline: none;
       text-align: center;
-      font-size: 1rem;
-      margin-top: 10px;
+      margin-bottom: 10px;
     }
 
     button {
-      margin-top: 15px;
       padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      background-color: #00c853;
-      color: white;
       font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: #ff9800;
+      color: #fff;
       cursor: pointer;
       transition: 0.3s;
     }
 
     button:hover {
-      background-color: #009624;
+      background: #e68900;
     }
 
-    p {
+    #mensagem {
       margin-top: 20px;
       font-size: 1.2rem;
     }
   </style>
-  <!-- Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
-  <h1>Jogo do Número Secreto 🎯</h1>
-  <p>Escolha um número entre 1 e 20</p>
-  <input type="number" id="chute" min="1" max="20" placeholder="Digite seu palpite">
+  <h1>Jogo do Número Secreto 🎲</h1>
+
+  <input type="number" id="chute" placeholder="Digite seu número" autofocus>
   <button onclick="verificarChute()">Chutar</button>
-  <p id="resultado"></p>
 
-  <script>
-    const numeroSecreto = Math.floor(Math.random() * 20) + 1;
-    let tentativas = 0;
+  <p id="mensagem"></p>
 
-    function verificarChute() {
-      const chute = Number(document.getElementById("chute").value);
-      const resultado = document.getElementById("resultado");
-      tentativas++;
-
-      if (chute === numeroSecreto) {
-        resultado.textContent = `🎉 Você acertou! O número era ${numeroSecreto}. Tentativas: ${tentativas}`;
-        explodirConfete();
-      } else if (chute > numeroSecreto) {
-        resultado.textContent = "📉 Tente um número menor!";
-      } else if (chute < numeroSecreto) {
-        resultado.textContent = "📈 Tente um número maior!";
-      }
-    }
-
-    // Permitir usar a tecla ENTER
-    document.getElementById("chute").addEventListener("keypress", function(event) {
-      if (event.key === "Enter") {
-        verificarChute();
-      }
-    });
-
-    // Função para explodir confete 🎉
-    function explodirConfete() {
-      var duration = 2 * 1000;
-      var end = Date.now() + duration;
-
-      (function frame() {
-        confetti({
-          particleCount: 7,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 }
-        });
-        confetti({
-          particleCount: 7,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 }
-        });
-
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
-        }
-      })();
-    }
-  </script>
+  <!-- Importa o JS -->
+  <script src="jogonumero.js"></script>
 </body>
 </html>
