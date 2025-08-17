@@ -1,80 +1,144 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jogo do Número Secreto</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      color: #fff;
-      text-align: center;
       margin: 0;
       padding: 0;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-
-    .container {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
-      width: 350px;
+      background-color: #001f3f;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      text-align: center;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     h1 {
-      margin-bottom: 20px;
-    }
-
-    input {
-      padding: 10px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      text-align: center;
-      margin-bottom: 15px;
-      width: 120px;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background: #00c851;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background: #007e33;
+      font-size: 4em;
+      margin: 0.2em;
     }
 
     p {
-      margin-top: 15px;
-      font-size: 18px;
-      font-weight: bold;
+      font-size: 1.5em;
+      margin: 0.5em;
+    }
+
+    input[type="number"] {
+      padding: 0.5em;
+      font-size: 1.2em;
+      width: 80px;
+      text-align: center;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 0.5em 1em;
+      font-size: 1.2em;
+      cursor: pointer;
+      background-color: #ff851b;
+      border: none;
+      border-radius: 5px;
+      color: white;
+    }
+
+    .success {
+      font-size: 5em;
+      color: #2ecc40; 
+    }
+
+    .confete {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      opacity: 0.8;
+      animation: cair 2s linear forwards;
+    }
+
+    @keyframes cair {
+      0% {transform: translateY(0) rotate(0deg);}
+      100% {transform: translateY(100vh) rotate(360deg);}
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🎯 Jogo do Número Secreto</h1>
-    <p>Escolha um número entre <strong>1 e 10</strong></p>
-    <input type="number" id="chute" min="1" max="10" placeholder="Seu palpite">
-    <br>
-    <button onclick="verificarChute()">Chutar</button>
-    <p id="resultado"></p>
+  <h1>JOGO DO NÚMERO SECRETO</h1>
+  <p>Tente adivinhar!</p>
+  <div id="game">
+    <input type="number" id="chute" placeholder="1-10" min="1" max="10">
+    <button id="btnChute">Chutar</button>
+    <p id="dica"></p>
   </div>
 
-  <!-- Biblioteca de confete -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <!-- Seu JS -->
-  <script src="jogonumero.js"></script>
+  <script>
+    let numeroSecreto = gerarNumeroSecreto();
+
+    function gerarNumeroSecreto() {
+      return Math.floor(Math.random() * 10) + 1;
+    }
+
+    function criarConfete() {
+      for (let i = 0; i < 100; i++) {
+        const confete = document.createElement('div');
+        confete.classList.add('confete');
+        confete.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
+        confete.style.left = `${Math.random() * window.innerWidth}px`;
+        confete.style.animationDuration = `${2 + Math.random()*2}s`;
+        document.body.appendChild(confete);
+
+        setTimeout(() => confete.remove(), 4000);
+      }
+    }
+
+    function verificarChute() {
+      const chuteInput = document.getElementById('chute');
+      const dica = document.getElementById('dica');
+      const chute = Number(chuteInput.value);
+
+      if (!chute || chute < 1 || chute > 10) {
+        dica.textContent = 'Digite um número entre 1 e 10!';
+        chuteInput.value = '';
+        chuteInput.focus();
+        return;
+      }
+
+      if (chute === numeroSecreto) {
+        dica.textContent = '';
+        criarConfete();
+        alert(`Parabéns! Você acertou o número ${numeroSecreto}!`);
+        numeroSecreto = gerarNumeroSecreto(); // Novo número secreto
+        chuteInput.value = '';
+        chuteInput.focus();
+      } else if (chute > numeroSecreto) {
+        dica.textContent = `O número secreto é menor que ${chute}`;
+      } else {
+        dica.textContent = `O número secreto é maior que ${chute}`;
+      }
+
+      chuteInput.value = '';
+      chuteInput.focus();
+    }
+
+    const btnChute = document.getElementById('btnChute');
+    const chuteInput = document.getElementById('chute');
+
+    // Ação do botão
+    btnChute.addEventListener('click', verificarChute);
+
+    // Enter também funciona
+    chuteInput.addEventListener('keyup', function(event) {
+      if (event.key === 'Enter') {
+        verificarChute();
+      }
+    });
+
+    // Boas-vindas
+    alert('Boas-vindas ao jogo do número secreto!');
+  </script>
 </body>
 </html>
