@@ -1,60 +1,60 @@
-let numeroSecreto = gerarNumeroSecreto();
+// script.js
 
-function gerarNumeroSecreto() {
-    return Math.floor(Math.random() * 10) + 1;
-}
+// Número secreto aleatório entre 1 e 100
+let numeroSecreto = Math.floor(Math.random() * 100) + 1;
+let tentativas = 0;
 
+// Pega os elementos do HTML
+const input = document.getElementById("chute");
+const botao = document.getElementById("botaoChutar");
+const mensagem = document.getElementById("mensagem");
+
+// Função principal do jogo
 function verificarChute() {
-    const chute = Number(document.getElementById('chute').value);
-    const mensagem = document.getElementById('mensagem');
+    const chute = parseInt(input.value);
 
-    if (!chute || chute < 1 || chute > 10) {
-        mensagem.textContent = "Digite um número válido entre 1 e 10!";
+    // Se não for número válido
+    if (isNaN(chute) || chute < 1 || chute > 100) {
+        mensagem.textContent = "Digite um número válido entre 1 e 100!";
+        mensagem.style.color = "red";
         return;
     }
 
+    tentativas++;
+
     if (chute === numeroSecreto) {
-        mensagem.textContent = `🎉 Parabéns! Você descobriu o número secreto: ${numeroSecreto}`;
-        document.body.style.backgroundColor = "#28a745";
+        mensagem.textContent = `🎉 Parabéns! Você acertou o número ${numeroSecreto} em ${tentativas} tentativas.`;
+        mensagem.style.color = "green";
 
-        // Efeito confete explosivo
-        for (let i = 0; i < 100; i++) {
-            const confete = document.createElement("div");
-            confete.className = "confete";
-            const size = Math.random() * 10 + 5;
-            confete.style.width = `${size}px`;
-            confete.style.height = `${size}px`;
-            confete.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
-            confete.style.left = `${Math.random() * window.innerWidth}px`;
-            confete.style.top = `${Math.random() * 50}px`; // Explode do topo
-            confete.style.transform = `rotate(${Math.random()*360}deg)`;
-            confete.style.animation = `cair ${2 + Math.random()*2}s ease-out forwards`;
-            document.body.appendChild(confete);
-            setTimeout(() => confete.remove(), 3000);
-        }
+        // Soltar confete quando acertar
+        confetti({
+            particleCount: 150,
+            spread: 100,
+            origin: { y: 0.6 }
+        });
 
-        // Novo número secreto para próxima rodada
-        numeroSecreto = gerarNumeroSecreto();
+        // Desabilita input e botão
+        input.disabled = true;
+        botao.disabled = true;
 
-    } else if (chute > numeroSecreto) {
-        mensagem.textContent = "O número secreto é menor!";
-    } else {
+    } else if (chute < numeroSecreto) {
         mensagem.textContent = "O número secreto é maior!";
+        mensagem.style.color = "blue";
+    } else {
+        mensagem.textContent = "O número secreto é menor!";
+        mensagem.style.color = "orange";
     }
+
+    input.value = "";
+    input.focus();
 }
 
-// Eventos: clique e Enter
-document.getElementById('botaoChutar').addEventListener('click', verificarChute);
-document.getElementById('chute').addEventListener('keyup', function(event) {
-    if (event.key === 'Enter') verificarChute();
+// Evento do botão
+botao.addEventListener("click", verificarChute);
+
+// Evento para o Enter funcionar
+input.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        verificarChute();
+    }
 });
-
-
-// botão
-document.getElementById('btnChutar').addEventListener('click', verificarChute);
-
-// permitir Enter
-document.getElementById('chute').addEventListener('keyup', function(event) {
-    if (event.key === "Enter") verificarChute();
-});
-
