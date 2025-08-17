@@ -1,128 +1,118 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo do Número Secreto</title>
-    <style>
-        body {
-            background-color: #001f3f;
-            color: white;
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            padding-top: 50px;
-            overflow-x: hidden;
-        }
+  <meta charset="UTF-8">
+  <title>Jogo do Número Secreto</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: white;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
 
-        h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
 
-        h2 {
-            font-size: 1.5em;
-            margin-bottom: 30px;
-        }
+    input {
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      text-align: center;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
 
-        input[type="number"] {
-            font-size: 1.2em;
-            padding: 10px;
-            width: 80px;
-            text-align: center;
-        }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #00c853;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-        button {
-            font-size: 1.2em;
-            padding: 10px 20px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
+    button:hover {
+      background-color: #009624;
+    }
 
-        #mensagem {
-            margin-top: 20px;
-            font-size: 1.5em;
-        }
-
-        /* --- confete --- */
-        .confete {
-    position: absolute;
-    border-radius: 50%;
-}
-
-@keyframes cair {
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-    50% { transform: translateY(50vh) rotate(180deg); }
-    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-}
-
-    </style>
+    p {
+      margin-top: 20px;
+      font-size: 1.2rem;
+    }
+  </style>
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
-    <h1>Jogo do Número Secreto</h1>
-    <h2>Tente adivinhar o número entre 1 e 10!</h2>
+  <h1>Jogo do Número Secreto 🎯</h1>
+  <p>Escolha um número entre 1 e 20</p>
+  <input type="number" id="chute" min="1" max="20" placeholder="Digite seu palpite">
+  <button onclick="verificarChute()">Chutar</button>
+  <p id="resultado"></p>
 
-    <input type="number" id="chute" placeholder="Número" min="1" max="10">
-    <button id="botaoChutar">Chutar</button>
+  <script>
+    const numeroSecreto = Math.floor(Math.random() * 20) + 1;
+    let tentativas = 0;
 
-    <p id="mensagem"></p>
+    function verificarChute() {
+      const chute = Number(document.getElementById("chute").value);
+      const resultado = document.getElementById("resultado");
+      tentativas++;
 
-    <script>
-        let numeroSecreto = gerarNumeroSecreto();
+      if (chute === numeroSecreto) {
+        resultado.textContent = `🎉 Você acertou! O número era ${numeroSecreto}. Tentativas: ${tentativas}`;
+        explodirConfete();
+      } else if (chute > numeroSecreto) {
+        resultado.textContent = "📉 Tente um número menor!";
+      } else if (chute < numeroSecreto) {
+        resultado.textContent = "📈 Tente um número maior!";
+      }
+    }
 
-        function gerarNumeroSecreto() {
-            return Math.floor(Math.random() * 10) + 1;
-        }
+    // Permitir usar a tecla ENTER
+    document.getElementById("chute").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        verificarChute();
+      }
+    });
 
-        function verificarChute() {
-            const chute = Number(document.getElementById('chute').value);
-            const mensagem = document.getElementById('mensagem');
+    // Função para explodir confete 🎉
+    function explodirConfete() {
+      var duration = 2 * 1000;
+      var end = Date.now() + duration;
 
-            if (!chute || chute < 1 || chute > 10) {
-                mensagem.textContent = "Digite um número válido entre 1 e 10!";
-                return;
-            }
-
-            if (chute === numeroSecreto) {
-                mensagem.textContent = `🎉 Parabéns! Você descobriu o número secreto: ${numeroSecreto}`;
-                document.body.style.backgroundColor = "#28a745";
-
-                // Confete explosivo
-                for (let i = 0; i < 100; i++) {
-                    const confete = document.createElement("div");
-                    confete.className = "confete";
-                    confete.style.left = Math.random() * window.innerWidth + "px";
-                    confete.style.backgroundColor = `hsl(${Math.random()*360}, 100%, 50%)`;
-                    confete.style.animationDuration = (2 + Math.random() * 2) + "s";
-                    confete.style.transform = `rotate(${Math.random()*360}deg)`;
-                    document.body.appendChild(confete);
-                    setTimeout(() => confete.remove(), 3000);
-                }
-
-                // Novo número secreto
-                numeroSecreto = gerarNumeroSecreto();
-
-            } else if (chute > numeroSecreto) {
-                mensagem.textContent = "O número secreto é menor!";
-                document.body.style.backgroundColor = "#001f3f";
-            } else {
-                mensagem.textContent = "O número secreto é maior!";
-                document.body.style.backgroundColor = "#001f3f";
-            }
-
-            document.getElementById('chute').value = '';
-            document.getElementById('chute').focus();
-        }
-
-        // Botão chutar
-        document.getElementById('botaoChutar').addEventListener('click', verificarChute);
-
-        // Pressionar Enter também funciona
-        document.getElementById('chute').addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
-                verificarChute();
-            }
+      (function frame() {
+        confetti({
+          particleCount: 7,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
         });
-    </script>
+        confetti({
+          particleCount: 7,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+    }
+  </script>
 </body>
 </html>
-
